@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: library_management
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library
+    username: postgres
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    open-in-view: false
