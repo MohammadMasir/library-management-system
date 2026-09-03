@@ -22,19 +22,26 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+//                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+//                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/auth", "/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable())
+//                .csrf(csrf -> csrf.disable()) // We don't have to disable it, since we have thymeleaf springsecurity6 classpath therefore it'll handle the csrf token we just have to use the "th:action='__'" property.
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .formLogin(form -> form
+                        .loginPage("/auth") // We use this function to specify the route/url/controller-end-point which returns our "custom" login.html, and not the SpringSecurity's default one.
+                        .loginProcessingUrl("/auth")
+                        .failureUrl("/auth?error=true")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll()
                 )
+                .httpBasic(basic -> basic.disable())
+//                .exceptionHandling(ex -> ex
+//                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+//                )
                 .build();
     }
 
@@ -43,10 +50,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    AuthenticationManager authenticationManager(CustomUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-        return new ProviderManager(daoAuthenticationProvider);
-    }
+    // We don't have to manually do the security configuration ourselves SpringSecurity does it or us..
+//    @Bean
+//    AuthenticationManager authenticationManager(CustomUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(userDetailsService);
+//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+//        return new ProviderManager(daoAuthenticationProvider);
+//    }
 }

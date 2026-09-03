@@ -1,7 +1,6 @@
-package com.interview.library_management.controller;
+package com.interview.library_management.controller.rest;
 
 import com.interview.library_management.dto.BookDto;
-import com.interview.library_management.model.Book;
 import com.interview.library_management.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

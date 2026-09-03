@@ -25,23 +25,32 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+//    private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
-    public void login(LoginDto login, HttpServletRequest request, HttpServletResponse response) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login.username(), login.password())
-        );
-
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authentication);
-        SecurityContextHolder.setContext(context);
-
-        securityContextRepository.saveContext(context, request, response);
-    }
+//    public void login(LoginDto login, HttpServletRequest request, HttpServletResponse response) {
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(login.username(), login.password())
+//        );
+//
+//        SecurityContext context = SecurityContextHolder.createEmptyContext();
+//        context.setAuthentication(authentication);
+//        SecurityContextHolder.setContext(context);
+//
+//        securityContextRepository.saveContext(context, request, response);
+//    }
 
     public void signup(RegisterDto registerDto) {
-        if (userRepository.findByUsername(registerDto.username()).isPresent()) {
+        System.out.println("Password : "+registerDto.password());
+        System.out.println("Confirm password : "+registerDto.confirmPassword());
+        if (!registerDto.password().equals(registerDto.confirmPassword())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Passwords do not match"
+            );
+        }
+
+        if (userRepository.existsByUsername(registerDto.username())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
         }
         User user = new User();

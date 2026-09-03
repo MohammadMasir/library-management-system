@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS - Registration</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
+<body>
+    <div style="justify-content: center; justify-self: center; margin-top: 20px;">
+        <h1 style="text-align: center; color: green; padding: 10px; border: 1px solid black; background-color: yellowgreen; border-radius: 10px">
+            Sign up
+        </h1>
+        <form th:action="@{/auth/signup}" method="post" style="border: 1px solid gray; padding: 10px; border-radius: 10px; border-top: transparent;">
+            <div style="display: grid; align-content: flex-start; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center;">
+                <label for="username">Username : </label>
+                <input type="text" name="username" id="username" style="margin-bottom: 10px">
+
+                <label for="email">Email : </label>
+                <input type="email" name="email" id="email" style="margin-bottom: 10px">
+
+                <label for="fullname">Full name : </label>
+                <input type="text" name="fullname" id="fullname" style="margin-bottom: 10px">
+
+                <label for="password">Password : </label>
+                <input type="password" name="password" id="password" style="margin-bottom: 10px">
+
+                <label for="confirmPassword">Confirm password : </label>
+                <input type="password" name="confirmPassword" id="confirmPassword" style="margin-bottom: 10px">
+            </div>
+            <div style="text-align: center; font-size: small; margin: 10px;">
+                <a href="/auth">Already a registered user? Login here!</a><br>
+            </div>
+            <button type="submit" onmouseover="this.style.background='darkolivegreen'; this.style.color='yellowgreen'" onmouseout="this.style.background='yellowgreen'; this.style.color='green'" style="color: green; background: yellowgreen; border: black; font-size: large; margin-top: 10px">
+                Register
+            </button>
+        </form>
+    </div>
+</body>
+</html>

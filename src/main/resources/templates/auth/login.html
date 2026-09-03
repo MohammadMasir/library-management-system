@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS - Login</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
+</head>
+<body>
+
+<!--    <div style="justify-items: center;">-->
+<!--        <div style="align-content: center; justify-items: center; background-color: darkolivegreen; padding-bottom: 50px; width: 50%">-->
+    <div style="text-align: center; justify-content: center; justify-self: center; margin-top: 20px;">
+        <h1 style="color: green; padding: 10px; border: 1px solid black; background-color: yellowgreen; border-radius: 10px">Sign in</h1>
+        <form th:action="@{/auth}" method="post" style="border: 1px solid gray; padding: 10px; border-radius: 10px; border-top: transparent;">
+            <div style="display: grid; align-content: flex-start; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center;">
+                <label for="username">Username : </label>
+                <input type="text" name="username" id="username" style="margin-bottom: 10px">
+
+                <label for="password">Password : </label>
+                <input type="password" name="password" id="password" style="margin-bottom: 10px">
+                <p th:if="${errorMsg}" style="color: red"><span th:text="${errorMsg}"></span></p>
+            </div>
+            <a href="forgot_password.html" style="font-size: small; margin-right: 10px;">Forgot password?</a>
+            <a href="/auth/signup" style="font-size: small">Create an account?</a><br>
+            <button type="submit" onmouseover="this.style.background='darkolivegreen'; this.style.color='yellowgreen'" onmouseout="this.style.background='yellowgreen'; this.style.color='green'" style="color: green; background: yellowgreen; border: black; font-size: large; margin-top: 10px">
+                Login
+            </button>
+        </form>
+    </div>
+<!--        </div>-->
+<!--    </div>-->
+</body>
+</html>
