@@ -1,12 +1,8 @@
 package com.interview.library_management.controller.views;
 
-import com.interview.library_management.dto.LoginDto;
 import com.interview.library_management.dto.RegisterDto;
 import com.interview.library_management.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,22 +26,6 @@ public class AuthViewController {
         if (logout != null) {model.addAttribute("logoutMsg", "Logged out successfully!");}
         return "auth/login";
     }
-
-//    @PostMapping
-//    public String login(
-//            @Valid @ModelAttribute Model loginData,
-//            HttpServletRequest httpServletRequest,
-//            HttpServletResponse httpServletResponse
-//            ){
-//        String username = (String) loginData.getAttribute("username");
-//        String password = (String) loginData.getAttribute("password");
-//        authService.login( new LoginDto(
-//                username,
-//                password
-//                ),httpServletRequest,httpServletResponse
-//        );
-//        return "homepage";
-//    }
 
     @GetMapping("/signup")
     public String signup(){
