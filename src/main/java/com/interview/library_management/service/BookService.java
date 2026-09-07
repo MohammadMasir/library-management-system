@@ -1,6 +1,9 @@
 package com.interview.library_management.service;
 
 import com.interview.library_management.dto.BookDto;
+import com.interview.library_management.exceptions.BookExistsException;
+import com.interview.library_management.exceptions.BookNotFoundException;
+import com.interview.library_management.exceptions.ResourceNotFound;
 import com.interview.library_management.model.Book;
 import com.interview.library_management.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +36,7 @@ public class BookService {
     @Transactional
     public void add(BookDto bookDto) {
         if (bookRepository.findBookByTitleAndAuthor(bookDto.authorName(), bookDto.title()).isPresent()) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
+            throw new BookExistsException(
                     "Book already present in Library."
             );
         }
@@ -47,9 +49,9 @@ public class BookService {
     }
 
     @Transactional
-    public void update(Long id, BookDto bookDto) {
-        Book book = bookRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
+    public void update(BookDto bookDto) {
+        Book book = bookRepository.findById(bookDto.id()).orElseThrow(
+                () -> new BookNotFoundException("Book not found")
         );
         book.setAuthor(bookDto.authorName());
         book.setTitle(bookDto.title());
@@ -59,7 +61,7 @@ public class BookService {
 
     public BookDto getById(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
+                () -> new ResourceNotFound("Book not found")
         );
         return new BookDto(
                 book.getTitle(),

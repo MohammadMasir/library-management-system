@@ -1,6 +1,8 @@
 package com.interview.library_management.service;
 
 import com.interview.library_management.dto.RegisterDto;
+import com.interview.library_management.exceptions.DifferentPasswordException;
+import com.interview.library_management.exceptions.UsernameAlreadyExists;
 import com.interview.library_management.model.User;
 import com.interview.library_management.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +20,13 @@ public class AuthService {
 
     public void signup(RegisterDto registerDto) {
         if (!registerDto.password().equals(registerDto.confirmPassword())) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Passwords do not match"
+            throw new DifferentPasswordException(
+                    "Passwords don't match!!!"
             );
         }
 
         if (userRepository.existsByUsername(registerDto.username())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
+            throw new UsernameAlreadyExists("Username already taken!!");
         }
         User user = new User();
         user.setUsername(registerDto.username());

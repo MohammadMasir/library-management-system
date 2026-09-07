@@ -1,6 +1,8 @@
 package com.interview.library_management.controller.views;
 
 import com.interview.library_management.dto.RegisterDto;
+import com.interview.library_management.exceptions.DifferentPasswordException;
+import com.interview.library_management.exceptions.UsernameAlreadyExists;
 import com.interview.library_management.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,17 +30,27 @@ public class AuthViewController {
     }
 
     @GetMapping("/signup")
-    public String signup(){
+    public String signup(Model model){
+        model.addAttribute("user", new RegisterDto("", "", "", "", ""));
         return "auth/registration";
     }
 
     @PostMapping("/signup")
     public String signup(
-            @Valid @ModelAttribute RegisterDto registerDto,
+            @Valid @ModelAttribute("user") RegisterDto registerDto,
             BindingResult bindingResult,
             Model model
     ){
-        authService.signup(registerDto);
+        try {
+            authService.signup(registerDto);
+        } catch (RuntimeException e) {
+            if (e instanceof UsernameAlreadyExists) {
+                bindingResult.rejectValue("username", "", e.getMessage());
+            } else if (e instanceof DifferentPasswordException) {
+                bindingResult.rejectValue("password", "", e.getMessage());
+            }
+            return "auth/registration";
+        }
         return "redirect:/auth";
     }
 

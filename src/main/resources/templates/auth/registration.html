@@ -7,27 +7,34 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     >
+</head>
 <body>
     <div style="justify-content: center; justify-self: center; margin-top: 20px;">
         <h1 style="text-align: center; color: green; padding: 10px; border: 1px solid black; background-color: yellowgreen; border-radius: 10px">
             Sign up
         </h1>
-        <form th:action="@{/auth/signup}" method="post" style="border: 1px solid gray; padding: 10px; border-radius: 10px; border-top: transparent;">
+        <form th:action="@{/auth/signup}" method="post" style="border: 1px solid gray; padding: 10px; border-radius: 10px; border-top: transparent;" th:object="${user}">
             <div style="display: grid; align-content: flex-start; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center;">
                 <label for="username">Username : </label>
-                <input type="text" name="username" id="username" style="margin-bottom: 10px">
+                <input type="text" name="username" id="username" style="margin-bottom: 10px" required>
+                <p th:each="e : ${#fields.errors('username')}" th:text="${e}" style="color: red; text-align: center;"></p>
 
                 <label for="email">Email : </label>
-                <input type="email" name="email" id="email" style="margin-bottom: 10px">
+                <input type="email" name="email" id="email" style="margin-bottom: 10px" required>
+                <p th:each="e : ${#fields.errors('email')}" th:text="${e}" style="color: red; text-align: center;"></p>
 
                 <label for="fullname">Full name : </label>
-                <input type="text" name="fullname" id="fullname" style="margin-bottom: 10px">
+                <input type="text" name="fullname" id="fullname" style="margin-bottom: 10px" required>
+                <p th:each="e : ${#fields.errors('fullname')}" th:text="${e}" style="color: red; text-align: center;"></p>
 
                 <label for="password">Password : </label>
-                <input type="password" name="password" id="password" style="margin-bottom: 10px">
+                <input type="password" name="password" id="password" style="margin-bottom: 10px" required>
+                <p th:each="e : ${#fields.errors('password')}" th:text="${e}" style="color: red; text-align: center;"></p>
 
                 <label for="confirmPassword">Confirm password : </label>
-                <input type="password" name="confirmPassword" id="confirmPassword" style="margin-bottom: 10px">
+                <input type="password" name="confirmPassword" id="confirmPassword" style="margin-bottom: 10px" required>
+                <p th:each="e : ${#fields.errors('confirmPassword')}" th:text="${e}" style="color: red; text-align: center;"></p>
+
             </div>
             <div style="text-align: center; font-size: small; margin: 10px;">
                 <a href="/auth">Already a registered user? Login here!</a><br>
