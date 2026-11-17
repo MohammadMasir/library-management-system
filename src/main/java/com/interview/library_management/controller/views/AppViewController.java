@@ -3,7 +3,6 @@ package com.interview.library_management.controller.views;
 import com.interview.library_management.dto.BookDto;
 import com.interview.library_management.service.BookService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,26 +25,29 @@ public class AppViewController {
 
     @GetMapping("/books")
     public String getAllBooks(Model model){
-        List<BookDto> books = bookService.getAll();
-        model.addAttribute("books", books);
+        List<BookDto> booksDto = bookService.getAll();
+        model.addAttribute("books", booksDto);
         return "book/all_books";
     }
 
     @GetMapping("/books/add")
     public String newBook(Model model){
+        model.addAttribute("form", new BookDto("","", ""));
         return "book/add_book";
     }
 
     @PostMapping("/books/add")
-    public String addBook(
+    public String newBook(
             @Valid @ModelAttribute BookDto bookDto,
             BindingResult bindingResult,
             Model model
             ){
-        if(bindingResult.hasErrors()){
-            model.addAttribute("errors",bindingResult.getAllErrors());
+        try {
+            bookService.add(bookDto);
+        } catch (RuntimeException e) {
+            model.addAttribute("addError", "Book exists in the Library!");
+            return "/book/add_book";
         }
-        bookService.add(bookDto);
         return "redirect:/books";
     }
 
@@ -63,7 +65,12 @@ public class AppViewController {
         if(bindingResult.hasErrors()){
             model.addAttribute("errors",bindingResult.getAllErrors());
         }
-        bookService.update(bookDto);
+        try {
+            bookService.update(bookDto);
+        } catch (RuntimeException e) {
+            model.addAttribute("updateError", "Book not present in Library!");
+            return "book/update_book";
+        }
         model.addAttribute("successfullyUpdate",true);
         model.addAttribute("bookDto",bookDto);
         return "redirect:/books";

@@ -54,4 +54,9 @@ public class AuthViewController {
         return "redirect:/auth";
     }
 
+    @GetMapping("/forgot-password")
+    public String forgotPassword(){
+        return "auth/forgot_password";
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.interview.library_management.controller.rest;
 
 import com.interview.library_management.dto.BookDto;
-import com.interview.library_management.service.BookService;
+import com.interview.library_management.service.BookServiceRest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/books")
 public class BookController {
 
-    private final BookService bookService;
+    private final BookServiceRest bookService;
 
     @GetMapping
     public ResponseEntity<List<BookDto>> getAllBooks(){
@@ -29,9 +29,9 @@ public class BookController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<Void> updateBook(@RequestBody @Valid BookDto bookDto, @PathVariable Long id){
-//        bookService.update(id, bookDto);
+        bookService.update(bookDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
