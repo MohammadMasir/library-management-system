@@ -1,4 +1,4 @@
-package com.interview.library_management.controller;
+package com.interview.library_management.controller.rest;
 
 import com.interview.library_management.dto.LoginDto;
 import com.interview.library_management.dto.RegisterDto;
@@ -31,7 +31,7 @@ public class AuthController {
     public ResponseEntity<Void> loginUser(@RequestBody @Valid LoginDto loginDto,
                                           HttpServletRequest request,
                                           HttpServletResponse response) {
-        authService.login(loginDto, request, response);
+//        authService.login(loginDto, request, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
